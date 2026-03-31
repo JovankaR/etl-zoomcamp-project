@@ -77,7 +77,7 @@ Edit `terraform/terraform.tfvars` to provide your GCP project and (optionally) c
 
 ```hcl
 gcp_project           = "your-gcp-project-id"      # (Required) Set this to your GCP project
-gcp_region            = "europe-west4"             # (Optional) Change if you want a different region
+gcp_region            = "europe-west6"             # (Optional) Change if you want a different region
 data_lake_bucket_name = "de-zoomcamp-data-lake"    # (Optional) Change if you want a different bucket name
 location              = "EU"                       # (Optional) Change if you want a different location
 ```
