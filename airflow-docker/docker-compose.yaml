@@ -94,7 +94,6 @@ services:
     env_file:
       - .env
 
-
   metabase:
     image: metabase/metabase:latest
     container_name: metabase

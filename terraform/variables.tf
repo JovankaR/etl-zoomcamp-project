@@ -10,7 +10,7 @@ variable "gcp_project" {
 variable "gcp_region" {
   type        = string
   description = "GCP region for resources"
-  default     = "europe-west4"
+  default     = "europe-west6"
 }
 
 # -----------------------
@@ -25,7 +25,7 @@ variable "data_lake_bucket_name" {
 
 variable "location" {
   type        = string
-  description = "Geographical location for bucket and dataset (e.g., EU, US, or a region like europe-west4)"
+  description = "Geographical location for bucket and dataset (e.g., EU, US, or a region like europe-west6)"
   default     = "EU"
 }
 
