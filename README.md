@@ -81,12 +81,6 @@ gcp_region            = "europe-west4"             # (Optional) Change if you wa
 data_lake_bucket_name = "de-zoomcamp-data-lake"    # (Optional) Change if you want a different bucket name
 location              = "EU"                       # (Optional) Change if you want a different location
 ```
-
-
-**Note:** Terraform will automatically create a service account with all required permissions for this project. You do not need to manually update any permissions.
-
-After running `terraform apply`, go to the IAM section in your GCP Console, find the service account created by Terraform, and download its JSON key file. This service account will be used by Airflow, Spark, and Metabase to operate all actions in GCP.
-
 Then run:
 
 ```bash
@@ -94,6 +88,12 @@ cd terraform
 terraform init
 terraform apply
 ```
+
+**Note:** Terraform will automatically create a service account with all required permissions for this project. You do not need to manually update any permissions.
+
+After running `terraform apply`, go to the IAM section in your GCP Console, find the service account created by Terraform, and download its JSON key file. This service account will be used by Airflow, Spark, and Metabase to operate all actions in GCP.
+
+
 
 ### 2. Airflow & Docker
 
@@ -140,14 +140,15 @@ SERVICE_ACCOUNT=default-from-terraform
 
 
 ### 4. Data Ingestion & Processing
+
+
+All steps can be monitored and managed using the Airflow UI, available at [http://localhost:8080](http://localhost:8080) or [http://127.0.0.1:8080](http://127.0.0.1:8080). The UI provides detailed logs and status for each task in the pipeline.
+
 **Airflow UI Login:**
 The default username and password for the Airflow UI are:
 
 - Username: `airflow`
 - Password: `airflow`
-
-
-All steps can be monitored and managed using the Airflow UI, available at [http://localhost:8080](http://localhost:8080) or [http://127.0.0.1:8080](http://127.0.0.1:8080). The UI provides detailed logs and status for each task in the pipeline.
 
 > **⚠️ Note:** Because of Dataproc cluster creation and Spark session initialization, the entire process can take up to **5-6 minutes** to complete.
 
