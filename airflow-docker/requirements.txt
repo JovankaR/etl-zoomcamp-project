@@ -1,0 +1,6 @@
+kaggle
+pandas
+google-cloud-storage
+python-dotenv
+pyspark
+apache-airflow-providers-google
