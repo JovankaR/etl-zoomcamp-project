@@ -1,8 +1,4 @@
 
-<p align="center">
-	<img src="images/technologies.png" alt="Technologies Used" width="600"/>
-</p>
-
 # ETL Zoomcamp Project: Mental Health Data Pipeline
 
 ## Overview
@@ -27,27 +23,9 @@ The transformed data is then loaded into BigQuery, where it becomes available fo
 
 ## Architecture
 
-```mermaid
-flowchart TD
-	A[Raw Data (Kaggle)] -->|upload_to_gcs.py| B[GCS Data Lake]
-	B -->|PySpark jobs| C[Dataproc Cluster]
-	C -->|main_transform.py| D[BigQuery Warehouse]
-	D -->|Analysis| E[Jupyter Notebooks]
-	subgraph Airflow DAG
-		A1[Create GCS Bucket] --> A2[Upload Data]
-		A2 --> A3[Upload Spark Scripts]
-		A3 --> A4[Create Dataproc Cluster]
-		A4 --> A5[Submit Spark Job]
-		A5 --> A6[Delete Cluster]
-	end
-	A1 -.-> B
-	A2 -.-> B
-	A3 -.-> B
-	A4 -.-> C
-	A5 -.-> D
-	E -.-> B
-	E -.-> D
-```
+<p align="center">
+	<img src="images/technologies.png" alt="Technologies Used" width="600"/>
+</p>
 
 ---
 
@@ -81,8 +59,17 @@ flowchart TD
 
 ---
 
+
 ## Setup Instructions
 
+### 0. Clone the Repository
+
+First, clone this repository to your local machine:
+
+```bash
+git clone https://github.com/JovankaR/etl-zoomcamp-project.git
+cd etl-zoomcamp-project
+```
 
 ### 1. Infrastructure (Terraform)
 
@@ -109,6 +96,7 @@ terraform apply
 ```
 
 ### 2. Airflow & Docker
+
 
 ```bash
 cd airflow-docker
@@ -152,10 +140,16 @@ SERVICE_ACCOUNT=default-from-terraform
 
 
 ### 4. Data Ingestion & Processing
+**Airflow UI Login:**
+The default username and password for the Airflow UI are:
+
+- Username: `airflow`
+- Password: `airflow`
+
 
 All steps can be monitored and managed using the Airflow UI, available at [http://localhost:8080](http://localhost:8080) or [http://127.0.0.1:8080](http://127.0.0.1:8080). The UI provides detailed logs and status for each task in the pipeline.
 
-**Note:** Because of Dataproc cluster creation and Spark session initialization, the entire process can take up to 5-6 minutes to complete.
+> **⚠️ Note:** Because of Dataproc cluster creation and Spark session initialization, the entire process can take up to **5-6 minutes** to complete.
 
 Airflow DAG will:
 1. Create GCS bucket (if needed)
@@ -180,7 +174,55 @@ Metabase will be automatically started by Docker Compose and accessible at [http
 	- Upload the same GCP service account JSON credentials used for Airflow.
 	- Enter your GCP project and dataset details.
 4. Use Metabase's SQL editor to query your final analysis tables in BigQuery.
+
 5. Create charts and dashboards to visualize your data using Metabase's built-in tools.
+
+#### Sample Queries for Visualization
+
+You can use the following SQL queries in Metabase's SQL editor to quickly create common types of charts:
+
+**Bar Chart Example**
+
+```sql
+SELECT
+	country,
+	drug_use_disorders,
+	alcohol_use_disorders,
+	depression
+FROM mental_health_dw.analytics_final
+WHERE country IN ('France', 'Italy', 'Germany', 'United Kingdom', 'Russia')
+AND year=2015
+```
+
+**Line Chart Example**
+
+```sql
+SELECT
+	country,
+	year,
+	gdp_percent,
+	unemployment_rate,
+	depression
+FROM mental_health_dw.analytics_final
+WHERE country IN ('France')
+```
+
+**Pie Chart Example**
+
+```sql
+SELECT
+	CASE
+		WHEN depression < 3 THEN 'Low depression'
+		WHEN depression BETWEEN 3 AND 6 THEN 'Medium depression'
+		ELSE 'High depression'
+	END AS mental_health_category,
+	COUNT(*) AS country_count
+FROM mental_health_dw.analytics_final
+WHERE year BETWEEN 2010 AND 2020
+GROUP BY mental_health_category
+```
+
+You can copy and paste these queries into Metabase, then use the visualization options to create bar, line, or pie charts as needed.
 
 <p align="center">
   <img src="images/metabase.png" alt="Metabase Sample Diagrams" width="700"/>

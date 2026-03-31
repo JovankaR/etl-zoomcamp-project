@@ -2,7 +2,6 @@
 *.csv
 *.json
 
-google-cloud-sdk/
 terraform/.terraform/
 
 # Byte-compiled / optimized / DLL files
@@ -142,7 +141,7 @@ celerybeat.pid
 *.sage.py
 
 # Environments
-.env
+
 .envrc
 .venv
 env/
